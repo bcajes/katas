@@ -8,24 +8,25 @@ class TestSumToZero extends FunSuite {
 
   test("should return entire array that sums to zero") {
   	val stz = new SumToZero
-	  val it_res = stz.process(Array(1,2,-3))
-	  val res = stringOf(it_res.toArray)
-	    assert( res == "Array(Array(1, 2, -3))",
-		    "res: " + res)
+	  val res = stz.process(Array(1,2,-3))
+	  val str_res = stringOf(res)
+	    assert( str_res == "Array(1, 2, -3)",
+		    "res: " + str_res)
   }
 
-  test("should return empty iterator for array"){
+  test("should raise NotFound exception if no combination sums to zero"){
     val stz = new SumToZero
-    val it_res = stz.process(Array(1,2,3,4))
-    assert(it_res.hasNext, stringOf(it_res.toArray))
+    intercept[SumToZeroNotFound]{
+      stz.process(Array(1,2,3,4))
+    }
   }
 
-  test("should return three nums that sum to zero from set of four"){
+  test("should return first set of nums that sum to zero"){
     val stz = new SumToZero
-    val it_res = stz.process(Array(125, 124, -100, -25))
-    val res = stringOf(it_res.toArray)
-    assert( res == "Array(Array(125, -100, -25))",
-      "res: " + res)
+    val res = stz.process(Array(125, 124, -100, -25, 1, 2, -3, 10, 100))
+    val str_res = stringOf(res)
+    assert( str_res == "Array(125, -100, -25)",
+      "res: " + str_res)
   }
 
 
