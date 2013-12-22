@@ -1,0 +1,58 @@
+apply plugin: 'java'
+apply plugin: 'scala'
+apply plugin: 'groovy'
+
+def scalaVersion = '2.9.3'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://repo.typesafe.com/typesafe/releases/'
+    }
+}
+
+dependencies {
+
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    compile "org.scala-lang:scala-library:${scalaVersion}"
+    testCompile 'org.scalatest:scalatest_2.9.3:2.0.M5b'
+}
+
+task initProjectStructure () << {
+    project.sourceSets.all*.allSource.srcDirTrees.flatten().dir.each { dir ->
+        dir.mkdirs()
+    }
+}
+
+sourceSets {
+
+    test {
+        scala {
+            srcDirs = ['test/scala']
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "net.saliman:gradle-cobertura-plugin:2.0.0"
+    }
+}
+
+apply plugin: 'cobertura'
+
+cobertura {
+    coverageFormats = [ 'xml', 'html' ]
+    coverageExcludes = [ '.*mock.*' ]
+}
+
+test {
+    jvmArgs '-Xms64m', '-Xmx512m', '-XX:MaxPermSize=128m'
+
+    testLogging.showStandardStreams = true //not sure about this one, was in official user guide
+
+    outputs.upToDateWhen { false } //makes it run every time even when Gradle thinks it is "Up-To-Date"
+}
