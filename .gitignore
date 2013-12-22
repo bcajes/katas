@@ -53,3 +53,4 @@ coverage_reports/
 .#*
 nosetests.xml
 .coverage
+.gradle/
