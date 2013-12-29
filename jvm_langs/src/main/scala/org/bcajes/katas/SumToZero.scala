@@ -24,7 +24,7 @@ object SumToZeroBruteForce extends SumToZero{
 
 
 object SumToZeroBinSearch extends SumToZero{
-  //optimized for processing size of three
+  //optimized with sorting and binary search
 
   //scala does not seem to have a native binary search routine
   implicit private class Search(val arr: Array[Int]){
@@ -44,9 +44,8 @@ object SumToZeroBinSearch extends SumToZero{
               val temp_sum = i_val + j_val
               val res_idx = sorted_arr.binSearch(-temp_sum)
               if (res_idx > -1) {
-                return Array(i_val,
-                             j_val, sorted_arr(res_idx))
-            }
+                return Array(i_val, j_val, sorted_arr(res_idx))
+              }
           }
       }
       throw new SumToZeroNotFound
